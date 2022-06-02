@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication
 public class AdvancedOperateApplication {
-    private static final String IP = "192.168.133.218";
+    private static final String IP = "ip";
 
     public static final String endpoints = "http://" + IP + ":2379,http://" + IP + ":2380,http://" + IP + ":2381";
 

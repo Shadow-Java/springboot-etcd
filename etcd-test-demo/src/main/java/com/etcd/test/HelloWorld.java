@@ -19,14 +19,16 @@ import static com.google.common.base.Charsets.UTF_8;
 @Slf4j
 public class HelloWorld {
 
-    private static final String IP = "192.168.133.218";
+    private static final String IP = "ip";
     /**
      * 新建key-value客户端实例
      * @return
      */
     private KV getKVClient(){
-        String endpoints = "http://" + IP + ":2379,http://" + IP + ":2380,http://" + IP + ":2381";
-        Client client = Client.builder().endpoints(endpoints.split(",")).build();
+        String endpoints = "http://" + IP + ":2379,http://" + IP + ":2380";
+        String user = "root";
+        String password = "123456";
+        Client client = Client.builder().endpoints(endpoints.split(",")).user(bytesOf(user)).password(bytesOf(password)).build();
         return client.getKVClient();
     }
 

@@ -1,13 +1,16 @@
 package com.etcd.test;
 
+import io.etcd.jetcd.KeyValue;
 import io.etcd.jetcd.kv.PutResponse;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -27,8 +30,10 @@ class HelloWorldTest {
     @org.junit.jupiter.api.Test
     @Order(2)
     void get() throws ExecutionException, InterruptedException {
-        String getResult = new HelloWorld().get(KEY);
-        assertEquals(VALUE, getResult);
+        List<KeyValue> getResult = new HelloWorld().get("/abc/foo");
+        getResult.forEach(keyValue -> {
+            System.out.println("key:"+keyValue.getKey().toString(UTF_8)+"   value:"+keyValue.getValue().toString(UTF_8));
+        });
     }
 
     @Test

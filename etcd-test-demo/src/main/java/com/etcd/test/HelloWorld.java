@@ -5,21 +5,28 @@ package com.etcd.test;
  * @Description todo
  * @create 2022-06-01 17:14
  */
+import com.ecloud.etcd.service.EtcdService;
 import io.etcd.jetcd.ByteSequence;
 import io.etcd.jetcd.Client;
 import io.etcd.jetcd.KV;
+import io.etcd.jetcd.KeyValue;
 import io.etcd.jetcd.kv.GetResponse;
 import io.etcd.jetcd.kv.PutResponse;
+import io.etcd.jetcd.options.GetOption;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static com.google.common.base.Charsets.UTF_8;
 
 @Slf4j
 public class HelloWorld {
+    @Autowired
+    private EtcdService etcdService;
 
-    private static final String IP = "ip";
+    private static final String IP = "124.220.187.175";
     /**
      * 新建key-value客户端实例
      * @return
@@ -48,7 +55,7 @@ public class HelloWorld {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public String get(String key) throws ExecutionException, InterruptedException{
+    public List<KeyValue> get(String key) throws ExecutionException, InterruptedException{
         log.info("start get, key [{}]", key);
         GetResponse response = getKVClient().get(bytesOf(key)).get();
 
@@ -56,10 +63,12 @@ public class HelloWorld {
             log.error("empty value of key [{}]", key);
             return null;
         }
+        List<KeyValue> keyValues =  response.getKvs();
 
-        String value = response.getKvs().get(0).getValue().toString(UTF_8);
-        log.info("finish get, key [{}], value [{}]", key, value);
-        return value;
+        //etcdService.getRange(key,GetOption.DEFAULT);
+        //String value = response.getKvs().get(0).getValue().toString(UTF_8);
+        log.info("finish get, key [{}], value [{}]", key, keyValues);
+        return keyValues;
     }
 
     /**

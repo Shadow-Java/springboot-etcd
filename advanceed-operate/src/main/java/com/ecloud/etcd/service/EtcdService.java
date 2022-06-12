@@ -52,5 +52,7 @@ public interface EtcdService {
      * 关闭，释放资源
      */
     void close();
+
+    //todo 获取所有用户和授权；将静态文件放在配置文件里面
 }
 
